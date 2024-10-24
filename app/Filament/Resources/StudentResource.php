@@ -26,11 +26,11 @@ class StudentResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->label('Name'),
-                TextInput::make('student_id'),
-                TextInput::make('address_1'),
-                TextInput::make('address_2')
-
+                TextInput::make('name')->label('Name')->required()
+                ->minLength(3),
+                TextInput::make('student_id')->required(),
+                TextInput::make('address_1')->required(),
+                TextInput::make('address_2')->required(),
             ]);
     }
 
