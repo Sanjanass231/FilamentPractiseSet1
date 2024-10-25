@@ -21,6 +21,7 @@ class StudentFactory extends Factory
             'student_id' => fake()->randomDigit(),
             'address_1' => fake()->country(),
             'address_2' => fake()->streetAddress(),
+            'standard_id'=> 1
 
         ];
     }
