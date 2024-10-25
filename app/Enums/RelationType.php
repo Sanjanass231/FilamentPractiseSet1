@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Enums;
+
+use Illuminate\Database\Eloquent\Factories\Relationship;
+
+enum RelationType : string
+{
+    case FATHER = 'Father';
+    case MOTHER = 'Mother';
+    case SISTER = 'Sister';
+    case BROTHER = 'Brother';
+
+    public static function getValues() : array
+    {
+      return array_column(RelationType::cases(),'value');
+    }
+}

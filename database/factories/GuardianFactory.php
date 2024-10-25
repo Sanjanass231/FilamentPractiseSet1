@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\RelationType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,10 @@ class GuardianFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'contact_number' => $this->faker->phoneNumber(),
+            'relation_type'=> $this->faker->randomElement(RelationType::getValues()),
+
         ];
     }
 }
