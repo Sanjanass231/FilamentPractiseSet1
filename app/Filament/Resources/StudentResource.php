@@ -10,6 +10,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Filament\Resources\StudentResource\RelationManagers;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
@@ -73,13 +74,6 @@ class StudentResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
@@ -116,4 +110,11 @@ class StudentResource extends Resource
     ];
 
     }
+
+    public static function getRelations(): array
+{
+    return [
+        RelationManagers\GuardiansRelationManager::class,
+    ];
+}
 }
