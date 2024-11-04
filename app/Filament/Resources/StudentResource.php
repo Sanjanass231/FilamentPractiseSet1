@@ -18,6 +18,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class StudentResource extends Resource
@@ -88,6 +89,14 @@ class StudentResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('Promote All')
+                      ->action(function (Collection $records){
+                        $records->each(function ($record){
+                      $record->standard_id = $record->standard_id + 1;
+                    $record->save();
+                        });
+                      })->requiresConfirmation()
+                      ->deselectRecordsAfterCompletion()
                 ]),
             ]);
     }
