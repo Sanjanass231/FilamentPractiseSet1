@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentResource\Pages;
+use App\Filament\Resources\StudentResource\RelationManagers;
 use App\Models\Student;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
@@ -10,13 +11,10 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use App\Filament\Resources\StudentResource\RelationManagers;
-use Filament\Actions\ActionGroup;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -67,36 +65,36 @@ class StudentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                 Tables\Actions\ActionGroup::make([
-                 Tables\Actions\Action::make('Promote')
-                ->action(function (Student $record){
-                    $record->standard_id = $record->standard_id + 1;
-                    $record->save();
-                })
-                ->color('success')
-                ->requiresConfirmation()
-                ,
-                Tables\Actions\Action::make('Demote')
-                ->action(function (Student $record){
-                    if($record->standard_id > 1){
-                    $record->standard_id = $record->standard_id - 1;
-                    $record->save();
-                    }
-                })->requiresConfirmation()
-                ->color('danger'),
-                ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('Promote')
+                        ->action(function (Student $record) {
+                            $record->standard_id = $record->standard_id + 1;
+                            $record->save();
+                        })
+                        ->color('success')
+                        ->requiresConfirmation(),
+                    Tables\Actions\Action::make('Demote')
+                        ->action(function (Student $record) {
+                            if ($record->standard_id > 1) {
+                                $record->standard_id = $record->standard_id - 1;
+                                $record->save();
+                            }
+                        })->requiresConfirmation()
+                        ->color('danger'),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('Promote All')
-                      ->action(function (Collection $records){
-                        $records->each(function ($record){
-                      $record->standard_id = $record->standard_id + 1;
-                    $record->save();
-                        });
-                      })->requiresConfirmation()
-                      ->deselectRecordsAfterCompletion()
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->standard_id += 1;
+                                $record->save();
+                            });
+                        })
+                        ->requiresConfirmation()
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }
@@ -120,28 +118,29 @@ class StudentResource extends Resource
     {
         return [
             'Name' => $record->name,
-            'Standard' => $record->standard->name
+            'Standard' => $record->standard->name,
         ];
     }
+
     public static function getGlobalSearchResultActions(Model $record): array
     {
-    return [
-       Action::make('Edit')
-       ->iconButton()
-       ->icon('heroicon-o-pencil')
-       ->url(static::getUrl('edit',['record' => $record])),
-       Action::make('View')
-       ->iconButton()
-       ->icon('heroicon-s-eye')
-       ->url(static::getUrl('index'))
-    ];
+        return [
+            Action::make('Edit')
+                ->iconButton()
+                ->icon('heroicon-o-pencil')
+                ->url(static::getUrl('edit', ['record' => $record])),
+            Action::make('View')
+                ->iconButton()
+                ->icon('heroicon-s-eye')
+                ->url(static::getUrl('index')),
+        ];
 
     }
 
     public static function getRelations(): array
-{
-    return [
-        RelationManagers\GuardiansRelationManager::class,
-    ];
-}
+    {
+        return [
+            RelationManagers\GuardiansRelationManager::class,
+        ];
+    }
 }
