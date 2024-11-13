@@ -40,6 +40,7 @@ class StudentResource extends Resource
         return $form
             ->schema([
                 Section::make('Personal Information')
+                ->collapsible()
                     ->schema([
                         Wizard::make([
                             Step::make('Personal Informaton')
@@ -65,7 +66,9 @@ class StudentResource extends Resource
 
                     ]),
 
-                Section::make('Medical Information')->schema([
+                Section::make('Medical Information')
+                ->collapsed()
+                ->schema([
                     Repeater::make('vitals')
                         ->schema([
                             Select::make('name')
@@ -73,7 +76,7 @@ class StudentResource extends Resource
                                 ->required(),
                             TextInput::make('value')->required()
                                 ->maxLength(255),
-                        ]),
+                        ])->columns(2),
                 ]),
 
             ]);
