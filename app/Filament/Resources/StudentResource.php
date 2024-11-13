@@ -8,6 +8,8 @@ use App\Models\Student;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Wizard;
+use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -35,12 +37,27 @@ class StudentResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->label('Name')->required()
-                    ->minLength(3),
-                TextInput::make('student_id')->required(),
-                TextInput::make('address_1')->required(),
-                TextInput::make('address_2')->required(),
-                Select::make('standard_id')->required()->relationship('standard', 'name')->label('Standard'),
+                Wizard::make([
+                     Step::make('Personal Informaton')
+                        ->schema([
+                            TextInput::make('name')->label('Name')->required()
+                                ->minLength(3),
+                            TextInput::make('student_id')->required(),
+                        ])
+                        ->description('enter your personal details')
+                        ->icon('heroicon-o-user'),
+                     Step::make('Address')
+                        ->schema([
+                            TextInput::make('address_1')->required(),
+                            TextInput::make('address_2')->required(),
+                        ])->icon('heroicon-o-home')
+                        ->description('add your address'),
+                     Step::make('School')
+                        ->schema([
+                           Select::make('standard_id')->required()->relationship('standard', 'name')->label('Standard'),
+
+                        ])->icon('heroicon-o-academic-cap'),
+                ]),
             ]);
     }
 
