@@ -6,6 +6,7 @@ use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
 use App\Models\Student;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard;
@@ -50,14 +51,23 @@ class StudentResource extends Resource
                         ->schema([
                             TextInput::make('address_1')->required(),
                             TextInput::make('address_2')->required(),
+
                         ])->icon('heroicon-o-home')
                         ->description('add your address'),
                      Step::make('School')
                         ->schema([
                            Select::make('standard_id')->required()->relationship('standard', 'name')->label('Standard'),
-
+                            Repeater::make('vitals')
+                         ->schema([
+                            Select::make('name')
+                            ->options(config('sm_config.vitals'))
+                            ->required()  ,
+                            TextInput::make('value')->required()
+                            ->maxLength(255)
+                         ])
                         ])->icon('heroicon-o-academic-cap'),
-                ]),
+                ])->startOnStep(3),
+
             ]);
     }
 

@@ -9,9 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Student extends Model
 {
-     use HasFactory;
+    use HasFactory;
     protected $fillable = [
-      'name','student_id','address_1','address_2','standard_id'
+      'name','student_id','address_1','address_2','standard_id','vitals'
+    ];
+
+    protected $casts = [
+       'vitals' => 'json'
     ];
 
     public function standard(): BelongsTo
