@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
+use App\Models\Certificate;
 use App\Models\Student;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
@@ -76,6 +77,19 @@ class StudentResource extends Resource
                                 ->required(),
                             TextInput::make('value')->required()
                                 ->maxLength(255),
+                        ])->columns(2),
+                ]),
+                Section::make('Certificates')
+                ->collapsible()
+                ->description('add student certifiate information')
+                ->schema([
+                    Repeater::make('certificates')
+                    ->relationship('certificates')
+                        ->schema([
+               Select::make('certificate_id')
+               ->options(Certificate::all()->pluck('name','id'))
+               ->searchable()->required()
+               ,TextInput::make('description')
                         ])->columns(2),
                 ]),
 
