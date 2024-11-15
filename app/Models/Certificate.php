@@ -9,6 +9,6 @@ class Certificate extends Model
 {
     use HasFactory;
     protected $fillable = [
-      'name','description','is_active'
+      'name','description','is_active','cert_img'
     ];
 }
