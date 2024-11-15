@@ -11,4 +11,8 @@ class Certificate extends Model
     protected $fillable = [
       'name','description','is_active','cert_img'
     ];
+
+    protected $casts = [
+        'cert_img' => 'array'
+    ];
 }

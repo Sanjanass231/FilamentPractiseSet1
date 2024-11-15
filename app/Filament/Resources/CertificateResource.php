@@ -8,6 +8,7 @@ use App\Models\Certificate;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -26,10 +27,30 @@ class CertificateResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name'),
+                Section::make()
+                ->schema([
+                  TextInput::make('name'),
                 RichEditor::make('description'),
                 TextInput::make('is_active')->default(true),
                 FileUpload::make('cert_img')->label('Certificate Image')
+                ->multiple()
+                ->reorderable()
+                ->openable()
+                ->downloadable()
+               ->deletable(false)
+                ->uploadingMessage('Uploading attachment...')
+
+
+
+
+
+
+
+
+
+
+                ])
+
             ]);
     }
 
